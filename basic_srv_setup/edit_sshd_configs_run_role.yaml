@@ -1,8 +1,0 @@
----
-- hosts: all
-  become: true
-  vars_files:
-    - /etc/ansible/ans_books/basic_srv_setup/vars/main.yaml
-  remote_user: root
-  roles:
-    - edit_sshd_configs
