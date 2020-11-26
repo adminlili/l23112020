@@ -1,0 +1,180 @@
+---
+- name: Install package wget and mc with auto answer yes for installing dependencies
+  register: is_exist_wget_mc_installed
+  yum:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - wget
+    - iptables-services
+    - mc
+
+- name: "Print install info about last packages"
+  debug:
+    var: is_exist_wget_mc_installed
+    verbosity: 2
+
+- name: "Check is wget and mc are installed"
+  block:
+    - name: "is mc and wget is successfully installed"
+      shell: "echo -e 'Installation wget and mc had success'"
+      when: is_exist_wget_mc_installed == 0
+
+    - name: "is installing mc and wget failed"
+      shell: "echo -e '\nInstallation wget and mc had ** FAIL **'"
+      when: is_exist_wget_mc_installed != 0
+
+- name: "Install necessary packages and utilites"
+  block:
+    - name: "install pkgs on Centos7"
+      when:
+        - ansible_facts['distribution'] == 'CentOS'
+        - ansible_facts['distribution_major_version'] == '7'
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - iotop
+        - dstat
+        - exim
+        - rsync
+        - logwatch
+        - smartmontools
+        - lsof
+        - tcpdump
+        - unzip
+        - mcelog
+        - mc
+        - pciutils
+        - net-tools
+        - iptables-services
+        - irqbalance
+        - tmux
+        - psmisc
+        - chrony
+        - bzip2
+        - firewalld
+        - yum-utils
+
+    - name: update repos and upgrade packages
+      block:
+        - name: update cache
+          yum:
+            update_cache: true
+
+        - name: upgrade packages to latest
+          shell: 'yum -y upgrade --nobest --skip-broken'
+          # yum:
+          #  name: "*"
+          #  state: latest
+
+        - name: some of configuration iptables-services
+          shell: '{{ item }}'
+          loop:
+            - 'systemctl unmask firewalld'
+            - 'systemctl stop firewalld'
+            - 'systemctl disable firewalld'
+            - 'systemctl start iptables'
+            - 'systemctl start ip6tables'
+            - 'systemctl enable iptables'
+            - 'systemctl enable ip6tables'
+            - 'iptables -L -n -v'
+            - 'ip6tables -L -n -v'
+            - 'mkdir -p  /root/iptables_backups/'
+            - 'iptables-save >> /root/iptables_backups/iptables_$(date +%Y_%m_%d)'
+
+    - name: "install pkgs on Centos 8"
+      when:
+        - ansible_facts['distribution'] == 'CentOS'
+        - ansible_facts['distribution_major_version'] == '8'
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - mc
+        - iotop
+        - atop
+        - exim
+        - rsync
+        - logwatch
+        - smartmontools
+        - lsof
+        - tcpdump
+        - unzip
+        - mcelog
+        - net-tools
+        - iptables-services
+        - irqbalance
+        - tmux
+        - psmisc
+        - chrony
+        - bzip2
+        - firewalld
+        - yum-utils
+
+- name: check if packages in CentOS 7 are installed
+  register: is_exists_needed_packages_centos7
+  when:
+    - ansible_facts['distribution'] == 'CentOS'
+    - ansible_facts['distribution_major_version'] == '7'
+  yum:
+    name:
+      - iotop
+      - dstat
+      - exim
+      - rsync
+      - logwatch
+      - smartmontools
+      - lsof
+      - tcpdump
+      - unzip
+      - pciutils
+      - net-tools
+      - iptables-services
+      - irqbalance
+      - tmux
+      - psmisc
+      - chrony
+      - bzip2
+      - firewalld
+      - yum-utils
+
+- name: "check if packages in CentOS 8 are installed"
+  register: is_exists_needed_packages_centos8
+  when:
+    - ansible_facts['distribution'] == 'CentOS'
+    - ansible_facts['distribution_major_version'] == '8'
+  yum:
+    name:
+      - iotop
+      - atop
+      - exim
+      - rsync
+      - logwatch
+      - smartmontools
+      - lsof
+      - tcpdump
+      - unzip
+      - mc
+      - net-tools
+      - iptables-services
+      - irqbalance
+      - tmux
+      - psmisc
+      - chrony
+      - bzip2
+      - firewalld
+      - yum-utils
+
+- name: install auditd and audit-lib if it is not installed
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - audit
+    - audit-libs
+
+- name: install other needed pkgs
+  shell: yum -y install "{{ item }}"
+  loop:
+    - brotli.x86_64

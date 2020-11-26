@@ -1,0 +1,28 @@
+---
+- name: "install and configure zabbix-agent"
+  block:
+    - name: "install pkg 'zabbix' from official repo"
+      rpm_key:
+        key: /etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX-A14FE591
+        state: present
+
+    - name: "install pkg 'zabbix-agent'"
+      yum:
+        name: zabbix-agent
+        state: present
+
+    - name: "editing /etc/zabbix/zabbix_agentd.conf"
+      blockinfile:
+        block: |
+                PidFile=/var/run/zabbix/zabbix_agentd.pid
+                LogFile=/var/log/zabbix/zabbix_agentd.log
+                LogFileSize=0
+                Server=138.201.33.71
+                ListenPort=10050
+                Hostname="{{ HOSTNAME }}"
+                Include=/etc/zabbix/zabbix_agentd.d/*.conf
+        path: /etc/zabbix/zabbix_agentd.conf
+
+    - name: "chkconfig zabbix-agent"
+      shell: "chkconfig --level 3 zabbix-agent on"
+  when: (ansible_facts['distribution'] == 'CentOS') and ((ansible_facts['distribution_major_version'] == '7') or  (ansible_facts['distribution_major_version'] == '8')) and ZABBIX == 1

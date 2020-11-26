@@ -1,0 +1,71 @@
+---
+- name: "Erase/Remove packages and their relative dirs"
+  ignore_errors: true
+  block:
+    - name: "part1 of deleting"
+      # shell: '/usr/libexec/initscripts/legacy-actions/auditd/stop'
+      block:
+        - name: stop selinux and auditd before deleting
+          shell: service "{{ item }}" stop
+          # service:
+              # name: "{{ item }}"
+              # state: stopped
+          loop:
+            - auditd
+            - selinux*
+
+        - name: selinux and auditd deleting
+          yum:
+            name: "{{ item }}"
+            state: absent
+          loop:
+            - auditd
+            - selinux*
+
+    - name: "part2 of deleting"
+      file:
+        force: true
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/selinux/targeted
+        - /var/log/audit
+      when: "AUDITD == 0"
+
+    - name: "Erase/Remove other unneccesary packages"
+      yum:
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - avahi-autoipd
+        - postfix
+        - ppp
+        - wpa_supplicant
+        - ntp
+        - polkit
+
+- name: "Find .rpmsave files and delete them"
+  block:
+    - name: "find files for deleting"
+      find:
+        paths: /etc/
+        patterns: "*.rpmsave"
+      register: files_for_deleting1
+
+    - name: delete finded files
+      file:
+        force: true
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ files_for_deleting1.files }}"
+
+- name: "delete other unneccesary dirs"
+  block:
+    - name: part1
+      file:
+        force: true
+        path: /var/log/anaconda
+        state: absent
+
+    - name: part2
+      shell: 'rm -f /var/log/*-{{ YEAR }}*'

@@ -1,0 +1,35 @@
+---
+- name: check if file /etc/yum.repos.d/nginx.repo exists, if no - touch
+  block:
+    - name: check if file /etc/yum.repos.d/nginx.repo exists
+      stat:
+        path: '/etc/yum.repos.d/nginx.repo'
+      register: if_exist_nginx_repo
+
+    - name: if file /etc/yum.repos.d/nginx.repo not exists then create it
+      file:
+        path: '/etc/yum.repos.d/nginx.repo'
+        state: touch
+      when: not if_exist_nginx_repo.stat.exists
+
+- name: "Editing file /etc/yum.repos.d/nginx.repo"
+  blockinfile:
+    backup: true
+    block: |
+            [nginx-stable]
+            name=nginx stable repo
+            baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+            gpgcheck=1
+            enabled=1
+            gpgkey=https://nginx.org/keys/nginx_signing.key
+            module_hotfixes=true
+
+            [nginx-mainline]
+            name=nginx mainline repo
+            baseurl=http://nginx.org/packages/mainline/centos/\$releasever/\$basearch/
+            gpgcheck=1
+            enabled=0
+            gpgkey=https://nginx.org/keys/nginx_signing.key
+            module_hotfixes=true
+    path: /etc/yum.repos.d/nginx.repo
+    state: present

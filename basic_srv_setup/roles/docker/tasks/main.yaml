@@ -1,0 +1,8 @@
+---
+- name: adding pkg docker_ce_repo
+  when: "DOCKER == 1"
+  shell: 'yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo && yum-config-manager --enable docker-ce-nightly && yum -y update --nobest --skip-broken'
+# yum_repository:
+#   baseurl: "https://download.docker.com/linux/centos/docker-ce.repo"
+#   description: "DOCKER-CE YUM repo"
+#   name: docker-ce
