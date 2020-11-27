@@ -21,14 +21,17 @@
 - name: To get a list of available PHP module streams.
   shell: dnf module list php
 
-- name: to enable the module stream.
+- name: to enable the module stream part 1. 
   shell: 'dnf module enable php:remi-7.4'
+
+- name: to enable the module stream part 2.
   dnf:
     name:
       - php
       - php-cli
       - php-fpm
       - php-common
+    state: present
 
 - name: To check the version of PHP installed
   shell: php -v
