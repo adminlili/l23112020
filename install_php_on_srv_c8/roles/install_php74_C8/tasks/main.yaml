@@ -9,6 +9,14 @@
   register: if_exist_epel_repo
   shell: rpm -qa | grep epel
 
+- rpm_key:
+    state: latest
+    key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018
+
+- rpm_key:
+    state: present
+    key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8  
+
 - name: To add the Remi repository
   dnf:
     name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
