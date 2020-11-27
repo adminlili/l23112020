@@ -10,7 +10,7 @@
   shell: rpm -qa | grep epel
 
 - rpm_key:
-    state: latest
+    state: present
     key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018
 
 - rpm_key:
