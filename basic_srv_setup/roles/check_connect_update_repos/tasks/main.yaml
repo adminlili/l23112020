@@ -20,14 +20,14 @@
       when:
         - ansible_facts['distribution'] == 'CentOS'
         - ansible_facts['distribution_major_version'] == '7'
-        - if_installed_repo_epel == 0
+       # - if_installed_repo_epel == 0
       shell: 'cd /home/$(whoami) && wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum -y install ./epel-release-latest-7.noarch.rpm'
 
     - name: install epel-release repo centos 8
       when:
         - ansible_facts['distribution'] == 'CentOS'
         - ansible_facts['distribution_major_version'] == '8'
-        - if_installed_repo_epel == 0
+       # - if_installed_repo_epel == 0
       shell: 'cd /home/$(whoami) && wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && dnf -y install ./epel-release-latest-*.noarch.rpm'
 
 #    - name: is install civenty-release repo
