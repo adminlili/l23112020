@@ -16,7 +16,7 @@
 
 - name: To confirm the presence of the REMI repository
   register: if_exist_remi_repo
-  shell: rom -qa | grep remi
+  shell: rpm -qa | grep remi
 
 - name: To get a list of available PHP module streams.
   shell: dnf module list php
