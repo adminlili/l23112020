@@ -21,14 +21,14 @@
         - ansible_facts['distribution'] == 'CentOS'
         - ansible_facts['distribution_major_version'] == '7'
        # - if_installed_repo_epel == 0
-      shell: 'cd /home/$(whoami) && wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum -y install ./epel-release-latest-7.noarch.rpm'
+      shell: 'mkdir /home/wget_repos && cd /home/wget_repos && wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum -y install ./epel-release-latest-7.noarch.rpm'
 
     - name: install epel-release repo centos 8
       when:
         - ansible_facts['distribution'] == 'CentOS'
         - ansible_facts['distribution_major_version'] == '8'
        # - if_installed_repo_epel == 0
-      shell: 'cd /home/$(whoami) && wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && dnf -y install ./epel-release-latest-*.noarch.rpm'
+      shell: 'mkdir /home/wget_repos && cd /home/wget_repos && wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && dnf -y install ./epel-release-latest-*.noarch.rpm'
 
 #    - name: is install civenty-release repo
 #      ignore_errors: true
@@ -36,8 +36,8 @@
 #      register: if_installed_repo_civenty
 
     - name: "Install package civenty-release.noarch.rpm from remote repo"
-      when: 'if_installed_repo_civenty == 0'
-      shell: 'wget https://repos.civenty.com/civenty-release.noarch.rpm && yum -y install ./civenty-release*.noarch.rpm'
+      #when: 'if_installed_repo_civenty == 0'
+      shell: 'cd /home/wget_repos && wget https://repos.civenty.com/civenty-release.noarch.rpm && yum -y install ./civenty-release*.noarch.rpm'
       register: installing_civenty_release
 
     - name: disable unusefull repos
