@@ -2,7 +2,7 @@
 - name: To install and enable the EPEL repository on CentOS 8
   dnf:
     name:
-      - install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+      - https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
     state: latest
 
 - name: To confirm the presence of the EPEL repository
