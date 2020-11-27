@@ -12,9 +12,9 @@
     - name: add docker repo
       shell: 'yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo  && yum-config-manager --enable docker-ce-nightly && yum -y update --nobest'
 
-    - name: is install epel-release repo
-      shell: yum info epel-release
-      register: if_installed_repo_epel
+#    - name: is install epel-release repo
+#      shell: yum info epel-release
+#      register: if_installed_repo_epel
 
     - name: install epel-release repo centos 7
       when:
@@ -30,10 +30,10 @@
         - if_installed_repo_epel == 0
       shell: 'cd / && wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && dnf -y install ./epel-release-latest-*.noarch.rpm'
 
-    - name: is install civenty-release repo
-      ignore_errors: true
-      shell: yum info civenty-release
-      register: if_installed_repo_civenty
+#    - name: is install civenty-release repo
+#      ignore_errors: true
+#      shell: yum info civenty-release
+#      register: if_installed_repo_civenty
 
     - name: "Install package civenty-release.noarch.rpm from remote repo"
       when: 'if_installed_repo_civenty == 0'

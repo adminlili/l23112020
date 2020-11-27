@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: true
+  remote_user: usr1
+  vars_files:
+    - /etc/ansible/ans_books/basic_srv_setup/vars/main.yaml
+  roles:
+    - install_pkgs
+    - check_connect_update_repos
+    - docker
+    - edit_bashrc_configs
+    - edit_hostname_timezone_localtime
+    - edit_sshd_configs
+    - edit_sys_configs
+    - nginx
+    - percona
+    - remi
+    - remove_pkgs_configs
+    - zabbix
