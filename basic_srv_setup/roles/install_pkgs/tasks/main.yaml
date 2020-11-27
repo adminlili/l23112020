@@ -78,10 +78,8 @@
             - 'systemctl start ip6tables'
             - 'systemctl enable iptables'
             - 'systemctl enable ip6tables'
-            - 'systemctl restart ip6tables'
-            - 'systemctl restart ip6tables'
-            #- 'iptables -L -n -v'
-            #- 'ip6tables -L -n -v'
+            - 'iptables -L -n -v'
+            - 'ip6tables -L -n -v'
             - 'mkdir -p  /root/iptables_backups/'
             - 'iptables-save >> /root/iptables_backups/iptables_$(date +%Y_%m_%d)'
 

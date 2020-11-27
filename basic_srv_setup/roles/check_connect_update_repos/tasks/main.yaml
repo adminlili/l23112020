@@ -10,9 +10,7 @@
 - name: " Add update repo and install package epel-release from remote repo"
   block:
     - name: add docker repo
-      shell: 'yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
-               && yum-config-manager --enable docker-ce-nightly
-               && yum -y update --nobest'
+      shell: 'yum-config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo  && yum-config-manager --enable docker-ce-nightly && yum -y update --nobest'
 
     - name: is install epel-release repo
       shell: yum info epel-release
