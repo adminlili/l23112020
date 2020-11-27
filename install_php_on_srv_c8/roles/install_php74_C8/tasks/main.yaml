@@ -31,17 +31,20 @@
 
 - name: to enable the module stream part 1. 
   command: dnf module enable -y php:remi-7.4
+  #shell: 'dnf module -y enable -y(or) php:remi-7.4'
+
+- name: to install the packages. 
   package:
+    state: latest
     name: 
       - php
       - php-cli
       - php-fpm
       - php-common
-  #shell: 'dnf module -y  enable php:remi-7.4'
 
 #- name: to enable the module stream part 2.
 #  dnf:
-#    name:
+     #name:
       #- php
       #- php-cli
       #- php-fpm
