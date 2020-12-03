@@ -8,7 +8,7 @@
           hostname $HOSTNAME;
         else 
           HOSTNAME=`hostname`; 
-        fi'
+        fi
       when: HOSTNAME is defined
 
     - name: "way #2 set username as hostname"
