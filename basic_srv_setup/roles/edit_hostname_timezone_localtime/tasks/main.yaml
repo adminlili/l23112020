@@ -3,20 +3,26 @@
   block:
     - name: variable hostname had got correctly
       shell: >
-             'if [ -n "{{ HOSTNAME }}" ];
-             then echo $HOSTNAME > /etc/hostname
-             hostname $HOSTNAME; else HOSTNAME=`hostname`; fi'
+          if [ -n "{{ HOSTNAME }}" ]; then echo $HOSTNAME > /etc/hostname
+          hostname $HOSTNAME; else HOSTNAME=`hostname`; fi'
       when: HOSTNAME is defined
 
     - name: "way #2 set username as hostname"
       shell: >
-             echo "$(whoami)" > /etc/hostname
-             && cat /etc/hostname && hostname $HOSTNAME
+           echo "$(whoami)" > /etc/hostname
+           && cat /etc/hostname && hostname $HOSTNAME
       when: HOSTNAME is defined
 
+- name: set a default shell for user usr1 
+  shell: "usermod --shell /bin/bash usr1"
+
+- name: set a default shell for user ne4to
+  command: usermod --shell /bin/bash "{{ USERNAME }}"
+
+
 - name: >
-        set timezone and create symbolic link
-        for value timezone and write it to file
+     set timezone and create symbolic link
+     for value timezone and write it to file
   block:
     - name: set timezone
       command: timedatectl set-timezone "{{ TIMEZONE }}"
@@ -32,3 +38,4 @@
 #     lineinfile:
 #       line: {{ TIMEZONE }}
 #       path: /etc/timezone
+
