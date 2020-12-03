@@ -2,12 +2,12 @@
 - name: "Check value hostname"
   block:
     - name: variable hostname had got correctly
-      shell: |
+      shell: >
         if [ -n "{{ HOSTNAME }}" ]; then 
           echo $HOSTNAME > /etc/hostname
           hostname $HOSTNAME;
         else 
-          HOSTNAME=`hostname`; 
+          HOSTNAME='hostname'; 
         fi
       when: HOSTNAME is defined
 

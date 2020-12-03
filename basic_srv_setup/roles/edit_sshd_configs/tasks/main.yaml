@@ -33,7 +33,9 @@
     path: /home/usr1/.ssh/authorized_keys
 
 - name: "rewrite file /home/usr1/.ssh/authorized_keys for {{ USERNAME }}"
+  lineinfile:
     line: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN0+mWVRN/qv35bmVGhuvbZqlolQroalE3lki6CfiW0Q ne4to@
+    path: /home/usr1/.ssh/authorized_keys
 
 - name: "rewrite file ~/.ssh/authorized_keys for {{ USERNAME }}"
   lineinfile:
