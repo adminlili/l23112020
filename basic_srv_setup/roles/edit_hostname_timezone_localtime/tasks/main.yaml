@@ -38,8 +38,8 @@
       command: ln -sf /usr/share/zonainfo/"{{ TIMEZONE }}" /etc/localtime
 
     - name: "write variable timezone in file"
-      command: echo "{{ TIMEZONE }}" > /etc/timezone
-#     lineinfile:
-#       line: {{ TIMEZONE }}
-#       path: /etc/timezone
+      #command: echo '"{{ TIMEZONE }}"' > /etc/timezone
+      lineinfile:
+        line: {{ TIMEZONE }}
+        path: /etc/timezone
 
