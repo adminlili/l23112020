@@ -34,6 +34,7 @@
         name: "{{ item }}"
         state: latest
       loop:
+        - pcp-system-tools
         - iotop
         - dstat
         - exim
@@ -109,7 +110,8 @@
         - psmisc
         - chrony
         - bzip2
-        - firewalld
+        - firewalld        
+        - pcp-system-tools
         - yum-utils
 
 - name: check if packages in CentOS 7 are installed
@@ -146,6 +148,7 @@
     - ansible_facts['distribution_major_version'] == '8'
   yum:
     name:
+      - pcp-system-tools
       - iotop
       - atop
       - exim
