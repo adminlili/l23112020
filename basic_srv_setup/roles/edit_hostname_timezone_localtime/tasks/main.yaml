@@ -38,7 +38,7 @@
       command: ln -sf /usr/share/zonainfo/"{{ TIMEZONE }}" /etc/localtime
 
     - name: create file /etc/timezone
-      command: touch /etc/timezone
+#      command: touch /etc/timezone
       file:
         path: /etc/timezone
         state: present
