@@ -37,6 +37,12 @@
     - name: "create symbolic link and deleting existing dest files"
       command: ln -sf /usr/share/zonainfo/"{{ TIMEZONE }}" /etc/localtime
 
+    - name: create file /etc/timezone
+      command: touch /etc/timezone
+      file:
+        path: /etc/timezone
+        state: present
+
     - name: "write variable timezone in file"
       lineinfile:
         line: "{{ TIMEZONE }}"
