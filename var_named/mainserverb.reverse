@@ -1,0 +1,20 @@
+$TTL 86400
+
+@	IN	SOA	mainsrv.mainserverb.local. root.mainserverb.local. (
+	
+	2020092101	;Serial
+	3600		;Refresh
+	1800		;Retry
+	604800		;Expire
+	86400		;Minimum TTL
+)
+
+	IN	NS	mainsrv.mainserverb.local.
+
+203		IN	PTR	mainsrv.mainserverb.local.
+203		IN	PTR	mail1.mainserverb.local.
+203		IN	PTR	pma.mainserverb.local.
+
+206		IN	PTR	test1.mainserverb.local.
+207		IN	PTR	test2.mainserverb.local.
+
