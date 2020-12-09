@@ -41,7 +41,7 @@
 #      command: touch /etc/timezone
       file:
         path: /etc/timezone
-        state: present
+        state: touch
 
     - name: "write variable timezone in file"
       lineinfile:
