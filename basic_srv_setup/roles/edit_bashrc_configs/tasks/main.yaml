@@ -1,0 +1,45 @@
+---
+- name: "editing /etc/skel/.bashrc"
+  blockinfile:
+    block: >
+        #list content with . and ..
+        alias la='ls -lAa'
+        alias if='ls -FA'
+        alias ll='ls -lA'
+        alias l='less'
+        #search pattern in files ignore case
+        alias g='egrep -i'
+        alias p='ping'
+        export EDITOR=/usr/bin/mcedit
+        umask 002
+	export PS1="\[\[\e[32;40m\]\u\[\e[0m\]@\[\e[32;40m\]\h\[\e[0m\] \[\e[36;40m\]\w\[\e[0m\]]\\$ "
+    insertafter: EOF
+    path: /etc/skel/.bashrc
+
+- name: "editing /root/.bashrc"
+  blockinfile:
+    block: |
+        alias la='ls -lAa'
+        alias lf='ls -FA'
+        alias ll='ls -lA'
+        alias l='less'
+        alias g='grep -i'
+        alias p='ping'
+        alias s='ssh'
+        alias t='telnet'
+        alias delr="sed -i 's/\r//'"
+        alias catc="grep -v -P '^(#|$)'"
+
+        export EDITOR=/usr/bin/mcedit
+        export HISTSIZE=10000
+
+        genpasswd() {
+            local l=$1
+                [ "$l" == "" ] && l=20
+                tr -dc A-Za-z0-9 < /dev/urandom | head -c ${l} | xargs
+        }
+
+	export PS1="\[\[\e[31;40m\]\u\[\e[0m\]@\[\e[32;40m\]\h\[\e[0m\] \[\e[36;40m\]\w\[\e[0m\]]\\$ "
+    insertafter: EOF
+    path: /root/.bashrc
+  when: "BASHRC == 1"

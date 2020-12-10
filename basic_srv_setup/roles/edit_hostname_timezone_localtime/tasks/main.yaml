@@ -1,0 +1,51 @@
+---
+- name: "Check value hostname"
+  block:
+    - name: variable hostname had got correctly
+      shell: >
+        if [ -n "{{ HOSTNAME }}" ]; then 
+          echo $HOSTNAME > /etc/hostname
+          hostname $HOSTNAME;
+        else 
+          HOSTNAME='hostname'; 
+        fi
+      when: HOSTNAME is defined
+
+    - name: "way #2 set username as hostname"
+      shell: >
+        echo "$(whoami)" > /etc/hostname
+        && cat /etc/hostname && hostname $HOSTNAME
+      when: HOSTNAME is defined
+
+- name: set a default shell for user usr1 
+  shell: "usermod --shell /bin/bash usr1"
+
+- name: set a default shell for user ne4to
+  command: usermod --shell /bin/bash "{{ USERNAME }}"
+
+
+- name: >
+     set timezone and create symbolic link
+     for value timezone and write it to file
+  block:
+    - name: set timezone
+      command: timedatectl set-timezone "{{ TIMEZONE }}"
+
+    - name: remove the current symlink or file
+      command: rm -rf /etc/localtime
+
+    - name: "create symbolic link and deleting existing dest files"
+      command: ln -sf /usr/share/zonainfo/"{{ TIMEZONE }}" /etc/localtime
+
+    - name: create file /etc/timezone
+#      command: touch /etc/timezone
+      file:
+        path: /etc/timezone
+        state: touch
+
+    - name: "write variable timezone in file"
+      lineinfile:
+        line: "{{ TIMEZONE }}"
+        path: /etc/timezone
+      #command: echo '"{{ TIMEZONE }}"' > /etc/timezone
+

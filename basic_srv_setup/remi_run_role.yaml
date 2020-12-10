@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: true
+  remote_user: root
+  roles:
+    - remi
+  vars_files:
+    - /etc/ansible/ans_books/basic_srv_setup/vars/main.yaml

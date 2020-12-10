@@ -1,0 +1,8 @@
+---
+- name: "install pkg 'percona' from official repo"
+  when: "PERCONA == 1"
+  yum:
+    name: >
+          "https://repo.percona.com/centos/
+          7/RPMS/noarch/percona-release-1.0-11.noarch.rpm"
+    state: present
