@@ -1,5 +1,0 @@
----
-- name: "update repos on host"
-  yum:
-    state: present
-    update_cache: true
